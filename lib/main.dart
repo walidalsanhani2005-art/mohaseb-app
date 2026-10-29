@@ -1,11 +1,13 @@
-import'package:flutter/materail.dart';
-void main(){
+import 'package:flutter/material.dart';
+
+void main() {
   runApp(
     MaterialApp(
-      home:Scaffold(
-        appBar:AppBar(
-          title: Text("المتكامل")
-          }
-          )
-        )
-      )'
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("المحاسب"),
+        ),
+      ),
+    ),
+  );
+}
