@@ -13,9 +13,10 @@ jobs:
         with:
           flutter-version: '3.22.3'
           channel: 'stable'
-      - name: Clean
+      - name: Clean and Recreate Android
         run: |
           flutter clean
+          flutter create . --platforms=android
           flutter pub get
       - name: Build APK
         run: flutter build apk --release
