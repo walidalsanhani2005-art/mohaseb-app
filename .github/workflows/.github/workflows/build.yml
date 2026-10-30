@@ -1,0 +1,21 @@
+name: Build Secure APK
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.0'
+          channel: 'stable'
+      - name: Fix old Gradle project
+        run: |
+          rm -rf android
+          flutter create . --platforms=android --project-name mohaseb_app
+      - run: flutter pub get
+      - run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mohaseb-app-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
