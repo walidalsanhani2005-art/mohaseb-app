@@ -81,7 +81,7 @@ class HomePage extends StatelessWidget {
         Container(color: Colors.green[100], padding: EdgeInsets.all(8), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.verified_user, color: Colors.green), SizedBox(width: 5), Text('التطبيق محمي ومشفر - خاص بك', style: TextStyle(color: Colors.green[800], fontWeight: FontWeight.bold))])),
         Padding(padding: EdgeInsets.all(10), child: Column(children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [topBtn(context, 'قبض/صرف', Icons.handshake, page: SimplePage('سند قبض محمي')), topBtn(context, 'المبيعات', Icons.shopping_cart, plus: true, page: SimplePage('مبيعات محمية - 75,000'))]),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [topBtn(context, 'الحسابات', Icons.assessment, page: SimplePage('تقارير محمية')), topBtn(context, 'المشتريات', Icons.shopping_cart_outlined, plus: true, page: SimplePage('مشتريات 850,000 - شركة التوفيق'))]),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [topBtn(context, 'الحسابات', Icons.assessment, page: SimplePage('تقارير محمية')), topBtn(context, 'المشتريات', Icons.shopping_cart_outlined, plus: true, page: SimplePage('قائمة'المشتريات'))]),
         ])),
         menu(context, 'عمليات مخزنية'), menu(context, 'قيود يومية'), menu(context, 'أصناف'), menu(context, 'العملات'), menu(context, 'التقارير'),
         SizedBox(height: 20), Text('© تطبيق خاص - مشفر', style: TextStyle(color: Colors.grey, fontSize: 11)),
