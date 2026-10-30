@@ -11,16 +11,16 @@ jobs:
           java-version: '17'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
+          flutter-version: '3.24.3'
           channel: 'stable'
-      - name: Clean and get packages
+      - name: Clean
         run: |
           rm -rf android
           flutter create . --platforms=android --project-name mohaseb_app
           flutter pub get
       - name: Build APK
-        run: flutter build apk --release --no-tree-shake-icons
-      - name: Upload APK
+        run: flutter build apk --release
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: mohaseb-app-apk
