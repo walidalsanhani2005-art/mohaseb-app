@@ -20,7 +20,7 @@ class LockScreen extends StatefulWidget {
 class _LockScreenState extends State<LockScreen> {
   final passCtrl = TextEditingController();
   final storage = FlutterSecureStorage();
-  bool isFirst = true;
+  bool isFirst = false;
   @override
   void initState(){ super.initState(); check(); }
   check() async {
