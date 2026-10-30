@@ -1,4 +1,4 @@
-name: Build Secure APK
+name: build
 on: [push]
 jobs:
   build:
@@ -11,17 +11,15 @@ jobs:
           java-version: '17'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.3'
+          flutter-version: '3.22.3'
           channel: 'stable'
       - name: Clean
         run: |
-          rm -rf android
-          flutter create . --platforms=android --project-name mohaseb_app
+          flutter clean
           flutter pub get
       - name: Build APK
         run: flutter build apk --release
-      - name: Upload
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: mohaseb-app-apk
+          name: mohaseb-soft-apk
           path: build/app/outputs/flutter-apk/app-release.apk
