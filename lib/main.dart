@@ -1,101 +1,69 @@
 import 'package:flutter/material.dart';
+import 'screens/sales_screen.dart';
 
-class SalesScreen extends StatefulWidget {
-  @override
-  _SalesScreenState createState() => _SalesScreenState();
+void main() {
+  runApp(MohasebApp());
 }
 
-class _SalesScreenState extends State<SalesScreen> {
-  final customerCtrl = TextEditingController();
-  final itemCtrl = TextEditingController();
-  final qtyCtrl = TextEditingController();
-  final priceCtrl = TextEditingController();
-  
-  List salesList = [];
-  double grandTotal = 0;
-
-  void addSale() {
-    if (itemCtrl.text.isNotEmpty) {
-      setState(() {
-        double qty = double.tryParse(qtyCtrl.text) ?? 1;
-        double price = double.tryParse(priceCtrl.text) ?? 0;
-        double total = qty * price;
-        salesList.add({
-          "customer": customerCtrl.text,
-          "item": itemCtrl.text,
-          "qty": qty,
-          "price": price,
-          "total": total,
-        });
-        grandTotal += total;
-        itemCtrl.clear();
-        qtyCtrl.clear();
-        priceCtrl.clear();
-      });
-    }
-  }
-
-  void saveInvoice() {
-    if (salesList.isEmpty) return;
-    
-    // هنا يصير القيد اليومي التلقائي اللي شرحناه
-    // من حساب: الصندوق / العميل
-    // إلى حساب: المبيعات
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("تم حفظ فاتورة ${customerCtrl.text} - الإجمالي $grandTotal ر.ي")),
+class MohasebApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'محاسب سوفت',
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Cairo'),
+      home: HomeScreen(),
     );
-    
-    setState(() {
-      salesList.clear();
-      grandTotal = 0;
-      customerCtrl.clear();
-    });
   }
+}
 
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("المبيعات"), backgroundColor: Colors.blue),
+      appBar: AppBar(
+        title: Text("محاسب سوفت - صنعاء"),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+      ),
       body: Padding(
-        padding: EdgeInsets.all(12),
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(controller: customerCtrl, decoration: InputDecoration(labelText: "اسم العميل", border: OutlineInputBorder(), prefixIcon: Icon(Icons.person))),
-            SizedBox(height: 8),
-            TextField(controller: itemCtrl, decoration: InputDecoration(labelText: "اسم الصنف", border: OutlineInputBorder(), prefixIcon: Icon(Icons.inventory))),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(child: TextField(controller: qtyCtrl, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: "العدد", border: OutlineInputBorder()))),
-                SizedBox(width: 8),
-                Expanded(child: TextField(controller: priceCtrl, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: "السعر", border: OutlineInputBorder()))),
-              ],
-            ),
+            _buildButton(context, "المبيعات", Icons.point_of_sale, Colors.green, SalesScreen()),
             SizedBox(height: 12),
-            ElevatedButton(onPressed: addSale, child: Text("إضافة صنف"), style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 45))),
-            SizedBox(height: 8),
-            Container(
-              padding: EdgeInsets.all(12),
-              width: double.infinity,
-              color: Colors.blue.shade50,
-              child: Text("الإجمالي: $grandTotal ر.ي", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: salesList.length,
-                itemBuilder: (context, i) {
-                  return Card(child: ListTile(title: Text(salesList[i]['item']), subtitle: Text("العدد: ${salesList[i]['qty']} × ${salesList[i]['price']}"), trailing: Text("${salesList[i]['total']}")));
-                },
-              ),
-            ),
-            ElevatedButton(
-              onPressed: saveInvoice,
-              child: Text("حفظ الفاتورة ✅", style: TextStyle(fontSize: 18)),
-              style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 50), backgroundColor: Colors.green),
-            ),
+            _buildButton(context, "المشتريات", Icons.shopping_cart, Colors.orange, null),
+            SizedBox(height: 12),
+            _buildButton(context, "التقارير", Icons.bar_chart, Colors.purple, null),
+            SizedBox(height: 12),
+            _buildButton(context, "العملاء", Icons.people, Colors.teal, null),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildButton(BuildContext context, String title, IconData icon, Color color, Widget? page) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        minimumSize: Size(double.infinity, 60),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      onPressed: () {
+        if (page != null) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$title قريباً")));
+        }
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: Colors.white),
+          SizedBox(width: 10),
+          Text(title, style: TextStyle(fontSize: 18, color: Colors.white)),
+        ],
       ),
     );
   }
