@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -23,14 +23,17 @@ jobs:
           flutter-version: '3.22.3'
           channel: 'stable'
 
-      - name: Check files
+      - name: Fix missing project files
         run: |
-          echo "=== FILES ==="
           ls -la
-          echo "=== PUBSPEC ==="
+          if [ ! -f "pubspec.yaml" ]; then
+            echo "pubspec.yaml missing - creating project..."
+            cp lib/main.dart /tmp/main_backup.dart
+            flutter create --project-name mohaseb_app --org com.mohaseb.app .
+            cp /tmp/main_backup.dart lib/main.dart
+          fi
           cat pubspec.yaml
-          echo "=== FLUTTER DOCTOR ==="
-          flutter doctor -v
+          ls -la android/
 
       - name: Get packages
         run: flutter pub get
