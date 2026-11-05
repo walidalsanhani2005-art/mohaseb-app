@@ -1,119 +1,127 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: Directionality(
-      textDirection: TextDirection.rtl,
-      child: HomePage(),
-    ),
-  ));
-}
+void main() => runApp(const MyApp());
 
-class HomePage extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("المبيعات"), backgroundColor: Colors.red),
-      body: Center(child: Text("قائمة المبيعات")),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Colors.red,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => BieAjelPage()),
-          );
-        },
-      ),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
     );
   }
 }
 
-class BieAjelPage extends StatefulWidget {
-  @override
-  _BieAjelPageState createState() => _BieAjelPageState();
-}
-
-class _BieAjelPageState extends State<BieAjelPage> {
-  bool isAjel = false;
-  bool isMortaja = false;
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF0F0F0),
       appBar: AppBar(
-        title: Text("بيع آجل"),
-        backgroundColor: Colors.blue[800],
-        actions: [IconButton(icon: Icon(Icons.save), onPressed: () {})],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Text("آجل"),
-                Switch(value: isAjel, onChanged: (v) => setState(() => isAjel = v)),
-                Expanded(child: Center(child: Text("المخزن الرئيسي"))),
-                Checkbox(value: isMortaja, onChanged: (v) => setState(() => isMortaja = v!)),
-                Text("مرتجع"),
-              ],
-            ),
-          ),
-          Center(child: Text("محلي")),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              children: [
-                Expanded(child: TextField(decoration: InputDecoration(labelText: "العميل"))),
-                SizedBox(width: 10),
-                Text("2026-11-06"),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              children: [
-                Expanded(child: TextField(decoration: InputDecoration(labelText: "ملاحظات"))),
-                Text("رقم# 1"),
-              ],
-            ),
-          ),
-          Divider(thickness: 2, color: Colors.blue),
-          Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
-            child: Row(
-              children: [
-                IconButton(icon: Icon(Icons.add_circle, color: Colors.blue, size: 30), onPressed: () {}),
-                Expanded(child: TextField(decoration: InputDecoration(hintText: "إكتب اسم الصنف", border: InputBorder.none))),
-              ],
-            ),
-          ),
-          Container(
-            color: Colors.grey[100],
-            padding: EdgeInsets.all(8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [Text("الصنف"), Text("الكمية"), Text("السعر"), Text("الاجمالي")],
-            ),
-          ),
-          Expanded(child: Container()),
-          Divider(thickness: 2, color: Colors.blue),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Column(
-              children: [
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("الخصم"), Text("0")]),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("الضريبة"), Text("0")]),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("رسوم أخرى"), Text("0")]),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("المبلغ المدفوع"), Text("0")]),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("الصافي"), Text("0")]),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("المبلغ المتبقي"), Text("0")]),
-              ],
-            ),
-          ),
+        backgroundColor: const Color(0xFF1976D2),
+        leading: const Icon(Icons.menu, color: Colors.white),
+        title: const Text('محاسب سوفت',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 19)),
+        centerTitle: true,
+        actions: const [
+          Icon(Icons.notifications_none, color: Colors.white),
+          SizedBox(width: 14),
+          Icon(Icons.share, color: Colors.white),
+          SizedBox(width: 12),
         ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(children: [
+                Expanded(child: _cardBlue('المبيعات', const Color(0xFF1976D2), true)),
+                const SizedBox(width: 8),
+                Expanded(child: _cardNormal('قبض / صرف', Icons.swap_horiz)),
+              ]),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(children: [
+                Expanded(child: _cardBlue('المشتريات', const Color(0xFF2E9E4F), true)),
+                const SizedBox(width: 8),
+                Expanded(child: _cardNormal('الحسابات', Icons.person_outline)),
+              ]),
+            ),
+            const SizedBox(height: 8),
+            _tile('عمليات مخزنية'),
+            _tile('قيود وحسابات'),
+            _tile('أصناف'),
+            _tile('العملات'),
+            _tile('التقارير'),
+            const SizedBox(height: 70),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        color: const Color(0xFF1976D2),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(Icons.sync, color: Colors.white),
+            Text('المخزن الرئيسي',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+            CircleAvatar(
+                radius: 16,
+                backgroundColor: Colors.red,
+                child: Icon(Icons.play_arrow, color: Colors.white, size: 18)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _cardBlue(String title, Color c, bool hasPlus) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(6),
+        border: Border(right: BorderSide(color: c, width: 5)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          CircleAvatar(radius: 15, backgroundColor: c, child: const Icon(Icons.add, color: Colors.white, size: 20)),
+        ],
+      ),
+    );
+  }
+
+  Widget _cardNormal(String title, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Icon(icon, color: Colors.black54),
+        ],
+      ),
+    );
+  }
+
+  Widget _tile(String title) {
+    return Container(
+      margin: const EdgeInsets.only(left: 8, right: 8, bottom: 6),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
+      child: ExpansionTile(
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+        children: const [ListTile(title: Text('...'))],
       ),
     );
   }
