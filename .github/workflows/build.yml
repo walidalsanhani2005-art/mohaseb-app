@@ -22,16 +22,21 @@ jobs:
         with:
           flutter-version: '3.22.3'
           channel: 'stable'
-          cache: true
+
+      - name: Check files
+        run: |
+          echo "=== FILES ==="
+          ls -la
+          echo "=== PUBSPEC ==="
+          cat pubspec.yaml
+          echo "=== FLUTTER DOCTOR ==="
+          flutter doctor -v
 
       - name: Get packages
         run: flutter pub get
 
-      - name: Analyze
-        run: flutter analyze || true
-
       - name: Build APK Release
-        run: flutter build apk --release --verbose
+        run: flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
