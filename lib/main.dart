@@ -1,129 +1,119 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MohasebApp()));
+void main() {
+  runApp(MaterialApp(
+    home: Directionality(
+      textDirection: TextDirection.rtl,
+      child: HomePage(),
+    ),
+  ));
+}
 
-class MohasebApp extends StatelessWidget {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('المحاسب - نسخة كاملة'), backgroundColor: Color(0xFF2C5FAA)),
-      body: ListView(
-        padding: EdgeInsets.all(10),
+      appBar: AppBar(title: Text("المبيعات"), backgroundColor: Colors.red),
+      body: Center(child: Text("قائمة المبيعات")),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Colors.red,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BieAjelPage()),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class BieAjelPage extends StatefulWidget {
+  @override
+  _BieAjelPageState createState() => _BieAjelPageState();
+}
+
+class _BieAjelPageState extends State<BieAjelPage> {
+  bool isAjel = false;
+  bool isMortaja = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("بيع آجل"),
+        backgroundColor: Colors.blue[800],
+        actions: [IconButton(icon: Icon(Icons.save), onPressed: () {})],
+      ),
+      body: Column(
         children: [
-          GridView.count(
-            crossAxisCount: 2, shrinkWrap: true, physics: NeverScrollableScrollPhysics(), childAspectRatio: 1.2,
-            children: [
-              _mainBox(context, 'المبيعات', Icons.point_of_sale, Colors.red),
-              _mainBox(context, 'قبض - صرف', Icons.swap_horiz, Colors.blue),
-              _mainBox(context, 'المشتريات', Icons.shopping_bag, Colors.green),
-              _mainBox(context, 'الحسابات', Icons.account_balance, Colors.purple),
-            ],
-          ),
-          _section(context, 'عمليات مخزنية', [
-            'صرف مخزني','توريد مخزني','تحويل مخزني','تسعير','جرد مخزني','تالف'
-          ]),
-          _section(context, 'قيود وحسابات', [
-            'سند قبض','سند صرف','قيد يومي','إشعار دائن','إشعار مدين','تقرير القيود'
-          ]),
-          _section(context, 'أصناف', [
-            'إضافة صنف','بحث صنف','مجموعات الأصناف','وحدات الأصناف','طباعة باركود'
-          ]),
-          _section(context, 'العملات', [
-            'إضافة عملة','سعر العملات','صرف العملات'
-          ], open: true),
-          _section(context, 'التقارير', [
-            'حركة الأصناف','كشف حساب','ميزان مراجعة','أرباح وخسائر','تقرير المبيعات','تقرير المشتريات'
-          ], open: true),
-        ],
-      ),
-    );
-  }
-
-  Widget _mainBox(BuildContext ctx, String title, IconData icon, Color c) {
-    return Card(
-      elevation: 4,
-      child: InkWell(
-        onTap: () => Navigator.push(ctx, MaterialPageRoute(builder: (_) => GenericPage(title: title, color: c, icon: icon))),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(icon, size: 45, color: c), SizedBox(height: 8),
-          Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15))
-        ]),
-      ),
-    );
-  }
-
-  Widget _section(BuildContext ctx, String secTitle, List<String> items, {bool open = false}) {
-    return Card(
-      margin: EdgeInsets.only(top: 8),
-      child: ExpansionTile(
-        initiallyExpanded: open,
-        title: Text(secTitle, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF2C5FAA))),
-        children: items.map((item) => ListTile(
-          title: Text(item),
-          leading: Icon(Icons.arrow_left, color: Colors.grey),
-          onTap: () => Navigator.push(ctx, MaterialPageRoute(builder: (_) => GenericPage(title: item, color: Color(0xFF2C5FAA), icon: Icons.list))),
-        )).toList(),
-      ),
-    );
-  }
-}
-
-// صفحة واحدة ذكية تشتغل لكل الأزرار
-class GenericPage extends StatefulWidget {
-  final String title; final Color color; final IconData icon;
-  GenericPage({required this.title, required this.color, required this.icon});
-  @override _GenericPageState createState() => _GenericPageState();
-}
-
-class _GenericPageState extends State<GenericPage> {
-  List<Map<String,String>> records = [];
-
-  void _addRecord() {
-    String name = ''; String amount = '';
-    showDialog(context: context, builder: (_) => AlertDialog(
-      title: Text('إضافة ${widget.title}'),
-      content: Column(mainAxisSize: MainAxisSize.min, children: [
-        TextField(decoration: InputDecoration(labelText: 'الاسم / البيان'), onChanged: (v)=>name=v),
-        TextField(decoration: InputDecoration(labelText: 'المبلغ / الكمية'), keyboardType: TextInputType.number, onChanged: (v)=>amount=v),
-      ]),
-      actions: [
-        TextButton(onPressed: (){
-          if(name.isNotEmpty){
-            setState(()=>records.add({'name':name,'amount':amount.isEmpty?'---':amount,'date':DateTime.now().toString().substring(0,16)}));
-          }
-          Navigator.pop(context);
-        }, child: Text('حفظ'))
-      ],
-    ));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title), backgroundColor: widget.color),
-      body: records.isEmpty 
-      ? Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(widget.icon, size: 80, color: Colors.grey[300]),
-          SizedBox(height: 15),
-          Text('لا يوجد بيانات في ${widget.title}', style: TextStyle(color: Colors.grey)),
-          SizedBox(height: 10),
-          Text('اضغط + للإضافة', style: TextStyle(color: Colors.grey, fontSize: 12)),
-        ]))
-      : ListView.builder(
-          itemCount: records.length,
-          itemBuilder: (_, i) => Card(
-            child: ListTile(
-              leading: CircleAvatar(backgroundColor: widget.color, child: Text('${i+1}', style: TextStyle(color: Colors.white))),
-              title: Text(records[i]['name']!),
-              subtitle: Text(records[i]['date']!),
-              trailing: Text(records[i]['amount']!, style: TextStyle(fontWeight: FontWeight.bold)),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Row(
+              children: [
+                Text("آجل"),
+                Switch(value: isAjel, onChanged: (v) => setState(() => isAjel = v)),
+                Expanded(child: Center(child: Text("المخزن الرئيسي"))),
+                Checkbox(value: isMortaja, onChanged: (v) => setState(() => isMortaja = v!)),
+                Text("مرتجع"),
+              ],
             ),
           ),
-        ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: widget.color,
-        onPressed: _addRecord,
-        child: Icon(Icons.add),
+          Center(child: Text("محلي")),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              children: [
+                Expanded(child: TextField(decoration: InputDecoration(labelText: "العميل"))),
+                SizedBox(width: 10),
+                Text("2026-11-06"),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              children: [
+                Expanded(child: TextField(decoration: InputDecoration(labelText: "ملاحظات"))),
+                Text("رقم# 1"),
+              ],
+            ),
+          ),
+          Divider(thickness: 2, color: Colors.blue),
+          Container(
+            decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
+            child: Row(
+              children: [
+                IconButton(icon: Icon(Icons.add_circle, color: Colors.blue, size: 30), onPressed: () {}),
+                Expanded(child: TextField(decoration: InputDecoration(hintText: "إكتب اسم الصنف", border: InputBorder.none))),
+              ],
+            ),
+          ),
+          Container(
+            color: Colors.grey[100],
+            padding: EdgeInsets.all(8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [Text("الصنف"), Text("الكمية"), Text("السعر"), Text("الاجمالي")],
+            ),
+          ),
+          Expanded(child: Container()),
+          Divider(thickness: 2, color: Colors.blue),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Column(
+              children: [
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("الخصم"), Text("0")]),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("الضريبة"), Text("0")]),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("رسوم أخرى"), Text("0")]),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("المبلغ المدفوع"), Text("0")]),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("الصافي"), Text("0")]),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("المبلغ المتبقي"), Text("0")]),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
