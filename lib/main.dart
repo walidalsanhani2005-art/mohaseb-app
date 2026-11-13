@@ -12,19 +12,23 @@ void main() {
           ),
           backgroundColor: Colors.green,
         ),
-        body: Align(
-          alignment: Alignment.topLeft,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SalesPage(),
-                ),
-              );
-            },
-            child: Text("المبيعات"),
-          ),
+        body: Builder( // <-- هذا السطر الجديد بس!
+          builder: (context) {
+            return Align(
+              alignment: Alignment.topLeft,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SalesPage(),
+                    ),
+                  );
+                },
+                child: Text("المبيعات"),
+              ),
+            );
+          },
         ),
       ),
     ),
