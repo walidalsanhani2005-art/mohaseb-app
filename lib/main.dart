@@ -5,8 +5,9 @@ void main() {
     MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(
-            "علي",
+            "وليد السنحاني",
             style: TextStyle(fontSize: 20),
           ),
           backgroundColor: Colors.green,
@@ -15,13 +16,36 @@ void main() {
           alignment: Alignment.topLeft,
           child: ElevatedButton(
             onPressed: () {
-              // هنا ايش يصير لما تضغط الزر
-              print("تم الضغط على الزر");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SalesPage(),
+                ),
+              );
             },
-            child: Text("الامبيعات"),
+            child: Text("المبيعات"),
           ),
         ),
       ),
     ),
   );
+}
+
+class SalesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("المبيعات"),
+        backgroundColor: Colors.green,
+      ),
+      body: Center(
+        child: Text(
+          "هنا بتكون المبيعات",
+          style: TextStyle(fontSize: 22),
+        ),
+      ),
+    );
+  }
 }
