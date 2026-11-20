@@ -1,21 +1,36 @@
-name: Build APK
+name: build
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
-  build:
+  build-apk:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
           channel: 'stable'
+          flutter-version: '3.24.0'
+
+      - name: Fix package name
+        run: |
+          # هذا السطر يصلح مشكلة mohaseb-app تلقائيا
+          sed -i 's/mohaseb-app/mohaseb_app/g' pubspec.yaml
+          cat pubspec.yaml | head -n 5
 
       - name: Create missing Android files
         run: flutter create . --platforms=android
@@ -29,5 +44,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
+          name: mohaseb_app-apk
           path: build/app/outputs/flutter-apk/app-release.apk
