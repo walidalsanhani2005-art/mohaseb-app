@@ -8,52 +8,75 @@ void main() {
   );
 }
 
-// الصفحة الأولى
-class HomePage extends StatefulWidget {
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('علي'),
+        title: Text(
+          'علي',
+          style: TextStyle(fontSize: 20),
+        ),
         backgroundColor: Colors.green,
       ),
       body: Align(
         alignment: Alignment.topLeft,
-        child: ElevatedButton(
-          onPressed: () {
-            // هنا التغيير الوحيد!
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SalesPage()),
-            );
-          },
-          child: Text('المبيعات'),
+        child: Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => salesPage(),
+                  ),
+                );
+              },
+              child: Text('المبيعات'),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-// الصفحة الثانية - قائمة المبيعات
-class SalesPage extends StatelessWidget {
+class salesPage extends StatefulWidget {
+  @override
+  State<salesPage> createState() => _salesPageState();
+}
+
+class _salesPageState extends State<salesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('قائمة المبيعات'),
-        backgroundColor: Colors.green,
+        title: Text('المبيعات'),
       ),
-      body: ListView(
-        children: [
-          ListTile(title: Text('زبون: علي - باع بـ 100 ريال')),
-          ListTile(title: Text('زبون: محمد - باع بـ 200 ريال')),
-          ListTile(title: Text('زبون: أحمد - باع بـ 150 ريال')),
-        ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => InvoicePage(),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class InvoicePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('الفاتورة'),
+      ),
+      body: Center(
+        child: Text('صفحة الفاتورة'),
       ),
     );
   }
