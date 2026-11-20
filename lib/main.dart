@@ -2,186 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
+      title: 'محاسب متكامل',
+      theme: ThemeData(primarySwatch: Colors.teal, useMaterial3: true),
+      home: const HomePage(),
     );
   }
 }
 
-class DatabaseHelper {
-  static Database? _db;
-
-  static Future<Database> getDb() async {
-    if (_db != null) return _db!;
-    String path = join(await getDatabasesPath(), 'shop.db');
-    _db = await openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE transactions(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            type TEXT,
-            amount REAL
-          )
-        ''');
-      },
-    );
-    return _db!;
-  }
-
-  static Future<void> addTransaction(String type, double amount) async {
-    final db = await getDb();
-    await db.insert('transactions', {'type': type, 'amount': amount});
-  }
-
-  static Future<double> getCash() async {
-    final db = await getDb();
-    var sales = await db.rawQuery("SELECT SUM(amount) as total FROM transactions WHERE type='sale'");
-    double totalSales = (sales.first['total'] as num?)?.toDouble() ?? 0;
-    var buys = await db.rawQuery("SELECT SUM(amount) as total FROM transactions WHERE type='buy'");
-    double totalBuys = (buys.first['total'] as num?)?.toDouble() ?? 0;
-    return 1000 + totalSales - totalBuys;
-  }
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+  @override
+  State<HomePage> createState() => _HomePageState();
 }
 
-class MainPage extends StatefulWidget {
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
+class _HomePageState extends State<HomePage> {
+  int _index = 0;
+  Database? db;
+  List<Map> products = [];
+  List<Map> sales = [];
+  List<Map> debts = [];
+  List<Map> expenses = [];
+  double cash = 0, totalSales = 0, totalBuy = 0, totalExp = 0;
 
-class _MainPageState extends State<MainPage> {
-  double cash = 1000;
-  int selectedIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    loadCash();
-  }
-
-  void loadCash() async {
-    double c = await DatabaseHelper.getCash();
-    setState(() { cash = c; });
-  }
-
-  void addSale(double price) async {
-    await DatabaseHelper.addTransaction('sale', price);
-    loadCash();
-  }
-
-  void addBuy(double price) async {
-    await DatabaseHelper.addTransaction('buy', price);
-    loadCash();
-  }
+  final itemC = TextEditingController();
+  final qtyC = TextEditingController();
+  final custC = TextEditingController();
+  final priceC = TextEditingController();
+  final expNameC = TextEditingController();
+  final expAmountC = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    List<Widget> pages = [
-      SalesPage(onSell: addSale),
-      PurchasesPage(onBuy: addBuy),
-      CashPage(cash: cash),
-    ];
-    return Scaffold(
-      body: pages[selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: (index) { setState(() { selectedIndex = index; }); },
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.sell), label: "مبيعات"),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "مشتريات"),
-          BottomNavigationBarItem(icon: Icon(Icons.account_balance_wallet), label: "الصندوق"),
-        ],
-      ),
-    );
-  }
-}
+  void initState() { super.initState(); _init(); }
 
-class SalesPage extends StatelessWidget {
-  final Function(double) onSell;
-  SalesPage({required this.onSell});
-  final TextEditingController controller = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("المبيعات"), backgroundColor: Colors.green),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            TextField(controller: controller, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: "سعر البيع")),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                double price = double.tryParse(controller.text) ?? 0;
-                onSell(price);
-                controller.clear();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("تم البيع وحفظه في SQL")));
-              },
-              child: Text("بيع"),
-            ),
-          ],
-        ),
-      ),
-    );
+  Future<void> _init() async {
+    db = await openDatabase(join(await getDatabasesPath(), 'full.db'), version: 1,
+      onCreate: (d, v) async {
+        await d.execute('CREATE TABLE products(id INTEGER PRIMARY KEY, name TEXT, qty INTEGER, price REAL)');
+        await d.execute('CREATE TABLE sales(id INTEGER PRIMARY KEY, item TEXT, qty INTEGER, customer TEXT, total REAL, type TEXT, date TEXT, paid INTEGER)');
+        await d.execute('CREATE TABLE expenses(id INTEGER PRIMARY KEY, name TEXT, amount REAL, date TEXT)');
+      });
+    _load();
   }
-}
 
-class PurchasesPage extends StatelessWidget {
-  final Function(double) onBuy;
-  PurchasesPage({required this.onBuy});
-  final TextEditingController controller = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("المشتريات"), backgroundColor: Colors.red),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            TextField(controller: controller, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: "سعر الشراء")),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                double price = double.tryParse(controller.text) ?? 0;
-                onBuy(price);
-                controller.clear();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("تم الشراء وحفظه في SQL")));
-              },
-              child: Text("شراء"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CashPage extends StatelessWidget {
-  final double cash;
-  CashPage({required this.cash});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("الصندوق"), backgroundColor: Colors.blue),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("المبلغ الحالي في الصندوق", style: TextStyle(fontSize: 20)),
-            Text("$cash", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-            Text("محفوظ في SQL، حتى لو سكرت التطبيق", style: TextStyle(color: Colors.grey)),
-          ],
-        ),
-      ),
-    );
-  }
-}
+  Future<void> _load() async {
+    products
