@@ -16,11 +16,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ============ قاعدة البيانات SQL ============
 class DatabaseHelper {
   static Database? _db;
 
-  // فتح قاعدة البيانات
   static Future<Database> getDb() async {
     if (_db != null) return _db!;
     String path = join(await getDatabasesPath(), 'shop.db');
@@ -28,7 +26,6 @@ class DatabaseHelper {
       path,
       version: 1,
       onCreate: (db, version) async {
-        // نسوي جدول واحد اسمه transactions
         await db.execute('''
           CREATE TABLE transactions(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,29 +38,21 @@ class DatabaseHelper {
     return _db!;
   }
 
-  // حفظ عملية جديدة
   static Future<void> addTransaction(String type, double amount) async {
     final db = await getDb();
     await db.insert('transactions', {'type': type, 'amount': amount});
   }
 
-  // حساب الصندوق من SQL
   static Future<double> getCash() async {
     final db = await getDb();
-    // نجمع كل المبيعات
     var sales = await db.rawQuery("SELECT SUM(amount) as total FROM transactions WHERE type='sale'");
     double totalSales = (sales.first['total'] as num?)?.toDouble() ?? 0;
-
-    // نجمع كل المشتريات
     var buys = await db.rawQuery("SELECT SUM(amount) as total FROM transactions WHERE type='buy'");
     double totalBuys = (buys.first['total'] as num?)?.toDouble() ?? 0;
-
-    // الصندوق = 1000 البداية + المبيعات - المشتريات
     return 1000 + totalSales - totalBuys;
   }
 }
 
-// ============ الصفحة الرئيسية ============
 class MainPage extends StatefulWidget {
   @override
   State<MainPage> createState() => _MainPageState();
@@ -76,23 +65,21 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    loadCash(); // أول ما تفتح التطبيق، اقرأ الصندوق من SQL
+    loadCash();
   }
 
   void loadCash() async {
     double c = await DatabaseHelper.getCash();
-    setState(() {
-      cash = c;
-    });
+    setState(() { cash = c; });
   }
 
   void addSale(double price) async {
-    await DatabaseHelper.addTransaction('sale', price); // احفظ في SQL
-    loadCash(); // حدث الصندوق
+    await DatabaseHelper.addTransaction('sale', price);
+    loadCash();
   }
 
   void addBuy(double price) async {
-    await DatabaseHelper.addTransaction('buy', price); // احفظ في SQL
+    await DatabaseHelper.addTransaction('buy', price);
     loadCash();
   }
 
@@ -103,16 +90,11 @@ class _MainPageState extends State<MainPage> {
       PurchasesPage(onBuy: addBuy),
       CashPage(cash: cash),
     ];
-
     return Scaffold(
       body: pages[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
-        onTap: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
+        onTap: (index) { setState(() { selectedIndex = index; }); },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.sell), label: "مبيعات"),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "مشتريات"),
@@ -123,12 +105,10 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-// ============ صفحة المبيعات ============
 class SalesPage extends StatelessWidget {
   final Function(double) onSell;
   SalesPage({required this.onSell});
   final TextEditingController controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,12 +135,10 @@ class SalesPage extends StatelessWidget {
   }
 }
 
-// ============ صفحة المشتريات ============
 class PurchasesPage extends StatelessWidget {
   final Function(double) onBuy;
   PurchasesPage({required this.onBuy});
   final TextEditingController controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,11 +165,9 @@ class PurchasesPage extends StatelessWidget {
   }
 }
 
-// ============ صفحة الصندوق ============
 class CashPage extends StatelessWidget {
   final double cash;
   CashPage({required this.cash});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
