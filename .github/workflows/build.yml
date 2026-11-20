@@ -31,7 +31,7 @@ jobs:
           cat pubspec.yaml | head -n 3
 
       - name: Create missing Android files
-        run: flutter create . --platforms=android
+        run: flutter create . --platforms=android --project-name mohaseb_app
 
       - name: Get packages
         run: flutter pub get
