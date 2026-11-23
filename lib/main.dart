@@ -8,7 +8,6 @@ void main() {
   );
 }
 
-// الصفحة الرئيسية
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// صفحة المبيعات
 class SalesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -80,7 +78,6 @@ class SalesPage extends StatelessWidget {
   }
 }
 
-// صفحة بيع اجل
 class AjalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -90,14 +87,11 @@ class AjalPage extends StatelessWidget {
         backgroundColor: Color(0xFF357EC7),
         title: Text('بيع اجل', style: TextStyle(fontSize: 20)),
       ),
-      body: Center(
-        child: Text('هنا صفحة بيع اجل'),
-      ),
+      body: Center(child: Text('هنا صفحة بيع اجل')),
     );
   }
 }
 
-// صفحة المشتريات
 class PurchasesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -107,12 +101,21 @@ class PurchasesPage extends StatelessWidget {
         backgroundColor: Color(0xFF357EC7),
         title: Text('المشتريات', style: TextStyle(fontSize: 20)),
       ),
-      body: Center(
-        child: Text('هنا صفحة المشتريات'),
-      ),
+      body: Center(child: Text('هنا صفحة المشتريات')),
     );
   }
 }
 
-// صفحة قبض / صرف الجديدة
-class QabdSarafPage extends
+class QabdSarafPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color(0xFF357EC7),
+        title: Text('قبض / صرف', style: TextStyle(fontSize: 20)),
+      ),
+      body: Center(child: Text('هنا صفحة قبض / صرف')),
+    );
+  }
+}
