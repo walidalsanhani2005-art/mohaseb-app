@@ -8,16 +8,14 @@ void main() {
   );
 }
 
+// الصفحة الرئيسية
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'علي',
-          style: TextStyle(fontSize: 20),
-        ),
-        backgroundColor: Colors.green,
+        title: Text('تطبيقي', style: TextStyle(fontSize: 20)),
+        backgroundColor: Color(0xFF357EC7),
       ),
       body: Align(
         alignment: Alignment.topLeft,
@@ -27,12 +25,30 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => salesPage(),
-                  ),
+                  MaterialPageRoute(builder: (context) => SalesPage()),
                 );
               },
               child: Text('المبيعات'),
+            ),
+            SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PurchasesPage()),
+                );
+              },
+              child: Text('المشتريات'),
+            ),
+            SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => QabdSarafPage()),
+                );
+              },
+              child: Text('قبض / صرف'),
             ),
           ],
         ),
@@ -41,25 +57,21 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class salesPage extends StatefulWidget {
-  @override
-  State<salesPage> createState() => _salesPageState();
-}
-
-class _salesPageState extends State<salesPage> {
+// صفحة المبيعات
+class SalesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('المبيعات'),
+        centerTitle: true,
+        backgroundColor: Color(0xFF357EC7),
+        title: Text('قائمه المبيعات', style: TextStyle(fontSize: 20)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => InvoicePage(),
-            ),
+            MaterialPageRoute(builder: (context) => AjalPage()),
           );
         },
         child: Icon(Icons.add),
@@ -68,16 +80,39 @@ class _salesPageState extends State<salesPage> {
   }
 }
 
-class InvoicePage extends StatelessWidget {
+// صفحة بيع اجل
+class AjalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('الفاتورة'),
+        centerTitle: true,
+        backgroundColor: Color(0xFF357EC7),
+        title: Text('بيع اجل', style: TextStyle(fontSize: 20)),
       ),
       body: Center(
-        child: Text('صفحة الفاتورة'),
+        child: Text('هنا صفحة بيع اجل'),
       ),
     );
   }
 }
+
+// صفحة المشتريات
+class PurchasesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color(0xFF357EC7),
+        title: Text('المشتريات', style: TextStyle(fontSize: 20)),
+      ),
+      body: Center(
+        child: Text('هنا صفحة المشتريات'),
+      ),
+    );
+  }
+}
+
+// صفحة قبض / صرف الجديدة
+class QabdSarafPage extends
