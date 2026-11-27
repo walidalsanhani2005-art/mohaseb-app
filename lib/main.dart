@@ -8,49 +8,200 @@ void main() {
   );
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('تطبيقي', style: TextStyle(fontSize: 20)),
-        backgroundColor: Color(0xFF357EC7),
+        backgroundColor: Color(0xFF25587E),
+        foregroundColor: Colors.white,
       ),
-      body: Align(
-        alignment: Alignment.topLeft,
-        child: Row(
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SalesPage()),
-                );
-              },
-              child: Text('المبيعات'),
+            // ===== الصف الأول =====
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SalesPage()),
+                      );
+                    },
+                    child: Text('المبيعات'),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NewSandPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Text('سند جديد'),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => QabdPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF25587E),
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Text('سند قبض'),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PurchasesPage()),
-                );
-              },
-              child: Text('المشتريات'),
+
+            SizedBox(height: 15),
+
+            // ===== الصف الثاني =====
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => OrdersPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                    ),
+                    child: Text('عروض / طلبيات', style: TextStyle(fontSize: 14)),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HawalaPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                    ),
+                    child: Text('حوالة جديدة', style: TextStyle(fontSize: 14)),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FatoraPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                    ),
+                    child: Text('فاتورة جديدة', style: TextStyle(fontSize: 14)),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => QabdSarafPage()),
-                );
-              },
-              child: Text('قبض / صرف'),
+
+            SizedBox(height: 15),
+
+            // ===== الصف الثالث: 3 أزرار =====
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => KashfPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueGrey,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                    ),
+                    child: Text('كشف حساب', style: TextStyle(fontSize: 14)),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SarfPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.indigo,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                    ),
+                    child: Text('صرف العملات', style: TextStyle(fontSize: 14)),
+                  ),
+                ),
+                SizedBox(width: 10),
+                // ===== الزر الثالث: مراجعة الحركات - الجديد =====
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MurajaaPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.brown,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                    ),
+                    child: Text('مراجعة الحركات', style: TextStyle(fontSize: 14)),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NewSandPage()),
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
@@ -61,222 +212,124 @@ class SalesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Color(0xFF357EC7),
-        title: Text('قائمه المبيعات', style: TextStyle(fontSize: 20)),
+        title: Text('قائمة المبيعات', style: TextStyle(fontSize: 20)),
+        backgroundColor: Color(0xFF25587E),
+        foregroundColor: Colors.white,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AjalPage()),
-          );
-        },
-        child: Icon(Icons.add),
-      ),
+      body: Center(child: Text('هنا قائمة المبيعات')),
     );
   }
 }
 
-class PurchasesPage extends StatelessWidget {
+class NewSandPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Color(0xFF357EC7),
-        title: Text('المشتريات', style: TextStyle(fontSize: 20)),
+        title: Text('سند جديد', style: TextStyle(fontSize: 20)),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
       ),
-      body: Center(child: Text('هنا صفحة المشتريات')),
+      body: Center(child: Text('هنا تسوي سند جديد')),
     );
   }
 }
 
-class QabdSarafPage extends StatelessWidget {
+class QabdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Color(0xFF357EC7),
-        title: Text('قبض / صرف', style: TextStyle(fontSize: 20)),
+        title: Text('سند قبض', style: TextStyle(fontSize: 20)),
+        backgroundColor: Color(0xFF25587E),
+        foregroundColor: Colors.white,
       ),
-      body: Center(child: Text('هنا صفحة قبض / صرف')),
+      body: Center(child: Text('هنا سند قبض')),
     );
   }
 }
 
-// صفحة بيع أجل - نفس الصورة بالضبط
-class AjalPage extends StatefulWidget {
-  @override
-  _AjalPageState createState() => _AjalPageState();
-}
-
-class _AjalPageState extends State<AjalPage> {
-  bool isAjal = false;
-  bool isMortaja = false;
-
+class OrdersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xFF357EC7),
-          title: Text('بيع أجل', style: TextStyle(fontSize: 20)),
-          leading: Icon(Icons.arrow_back),
-          actions: [Icon(Icons.save_outlined)],
-        ),
-        body: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFF357EC7)),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text('أجل'),
-                      Switch(
-                        value: isAjal,
-                        onChanged: (v) {
-                          setState(() { isAjal = v; });
-                        },
-                      ),
-                      Spacer(),
-                      Text(
-                        'المخزن الرئيسي',
-                        style: TextStyle(decoration: TextDecoration.underline),
-                      ),
-                      Icon(Icons.arrow_drop_down),
-                      Spacer(),
-                      Checkbox(
-                        value: isMortaja,
-                        onChanged: (v) {
-                          setState(() { isMortaja = v!; });
-                        },
-                      ),
-                      Text('مرتجع'),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.arrow_drop_down),
-                      Text(
-                        'محلي',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Text('العميل'),
-                      Expanded(
-                        child: Text(
-                          '2026-11-24',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(color: Colors.pink, thickness: 1),
-                  Row(
-                    children: [
-                      Text('رقم # 1'),
-                      Expanded(
-                        child: Text(
-                          'ملاحظات',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFF357EC7), width: 2),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        hintText: 'إكتب اسم الصنف',
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFF357EC7),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Icon(Icons.add, color: Colors.white, size: 28),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text('الصنف'),
-                  Text('الكمية'),
-                  Text('السعر'),
-                  Text('الاجمالي'),
-                ],
-              ),
-            ),
-            Divider(),
-            Spacer(),
-            Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: Color(0xFF357EC7), width: 2)),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('الخصم'),
-                      Row(children: [Icon(Icons.arrow_drop_down), Text('0')]),
-                      Text('الصافي'),
-                      Text('0'),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text('الضريبة'), Text('0'), Text(''), Text('0')],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text('رسوم أخرى'), Text('0'), Text('المبلغ المدفوع'), Text('0')],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text(''), Text(''), Text('المبلغ المتبقي'), Text('0')],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('عروض / طلبيات', style: TextStyle(fontSize: 20)),
+        backgroundColor: Colors.orange,
+        foregroundColor: Colors.white,
       ),
+      body: Center(child: Text('هنا عروض / طلبيات')),
+    );
+  }
+}
+
+class HawalaPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('حوالة جديدة', style: TextStyle(fontSize: 20)),
+        backgroundColor: Colors.purple,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(child: Text('هنا تسوي حوالة جديدة')),
+    );
+  }
+}
+
+class FatoraPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('فاتورة جديدة', style: TextStyle(fontSize: 20)),
+        backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(child: Text('هنا تسوي فاتورة جديدة')),
+    );
+  }
+}
+
+class KashfPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('كشف حساب', style: TextStyle(fontSize: 20)),
+        backgroundColor: Colors.blueGrey,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(child: Text('هنا كشف حساب')),
+    );
+  }
+}
+
+class SarfPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('صرف العملات', style: TextStyle(fontSize: 20)),
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(child: Text('هنا صرف العملات')),
+    );
+  }
+}
+
+// ===== الصفحة الجديدة: مراجعة الحركات =====
+class MurajaaPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('مراجعة الحركات', style: TextStyle(fontSize: 20)),
+        backgroundColor: Colors.brown,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(child: Text('هنا مراجعة الحركات')),
     );
   }
 }
