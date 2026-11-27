@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'bai_ajel_page.dart';
 void main() {
   runApp(
     MaterialApp(
@@ -216,7 +216,57 @@ class SalesPage extends StatelessWidget {
         backgroundColor: Color(0xFF25587E),
         foregroundColor: Colors.white,
       ),
-      body: Center(child: Text('هنا قائمة المبيعات')),
+      body: Padding(
+  padding: EdgeInsets.all(16),
+  child: GridView.count(
+    crossAxisCount: 2,
+    crossAxisSpacing: 16,
+    mainAxisSpacing: 16,
+    children: [
+      // أيقونة بيع نقدي
+      InkWell(
+        onTap: () {
+          // هنا بتوديك لصفحة البيع النقدي
+          // بنسويها بعدين
+        },
+        child: Card(
+          color: Colors.green[100],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.money, size: 50, color: Colors.green),
+              SizedBox(height: 10),
+              Text('بيع نقدي', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+      ),
+
+      // أيقونة بيع آجل
+      InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BaiAjelPage(),
+            ),
+          );
+        },
+        child: Card(
+          color: Colors.orange[100],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.calendar_month, size: 50, color: Colors.orange),
+              SizedBox(height: 10),
+              Text('بيع آجل', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+      ),
+    ],
+  ),
+),
     );
   }
 }
